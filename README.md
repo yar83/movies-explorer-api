@@ -1,2 +1,2 @@
 # movies-explorer-api
-Yandex Praktikum theses API part
+Yandex Praktikum thesis API part
