@@ -9,6 +9,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yar83/movies-explorer-api.git"
@@ -21,10 +22,12 @@
   },
   "homepage": "https://github.com/yar83/movies-explorer-api#readme",
   "dependencies": {
+    "dotenv": "^16.0.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "mongoose": "^6.2.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
