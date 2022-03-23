@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import Validator from './shared/Validator.js';
+import Movie from './statics/Movie.js';
 
 const { Schema } = mongoose;
 
@@ -31,16 +33,28 @@ const movieSchema = new Schema({
   image: {
     type: String,
     required: [true, 'Ссылка на постер не указана'],
+    validate: {
+      validator: Validator.validateURL,
+      message: (props) => `${props.value} не является допустимой ссылкой`,
+    },
   },
 
   trailerLInk: {
     type: String,
     requiredPaths: [true, 'Ссылка на трейлер не указана'],
+    validate: {
+      validator: Validator.validateURL,
+      message: (props) => `${props.value} не является допустимой ссылкой`,
+    },
   },
 
   thumbnail: {
     type: String,
     required: [true, 'Постер (миниатюрное изображение) не указан'],
+    validate: {
+      validator: Validator.validateURL,
+      message: (props) => `${props.value} не является допустимой ссылкой`,
+    },
   },
 
   owner: {
@@ -65,5 +79,7 @@ const movieSchema = new Schema({
     required: [true, 'Английское название фильма не указано'],
   },
 });
+
+movieSchema.loadClass(Movie);
 
 export default mongoose.model('Movie', movieSchema);

@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import Validator from './shared/Validator.js';
+import User from './statics/User.js';
 
 const { Schema } = mongoose;
 
@@ -8,6 +10,10 @@ const userSchema = new Schema({
     required: [true, 'Email не указан'],
     index: true,
     unique: true,
+    validate: {
+      validator: Validator.validateEmail,
+      message: (props) => `${props.value} недопустимый адрес почты`,
+    },
   },
 
   password: {
@@ -23,5 +29,7 @@ const userSchema = new Schema({
     maxLength: [30, 'Имя не может быть длиннее двух символов'],
   },
 });
+
+userSchema.loadClass(User);
 
 export default mongoose.model('User', userSchema);
