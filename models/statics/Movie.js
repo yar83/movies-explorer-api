@@ -2,27 +2,27 @@ export default class Movie {
   static createMovie(movieData) {
     return this.create(movieData)
       .then((movie) => movie)
-      .catch((err) => err);
+      .catch((err) => Promise.reject(err));
   }
 
   static getMovieById(id) {
     return this.findById(id)
-      .orFail(/* error */)
+      .orFail()
       .then((movie) => movie)
-      .catch((err) => err);
+      .catch((err) => Promise.reject(err));
   }
 
   static getAllUserMovies(owner) {
-    this.find({ owner })
-      .orFail(/* err */)
+    return this.find({ owner })
+      .orFail()
       .then((movies) => movies)
-      .catch((err) => err);
+      .catch((err) => Promise.reject(err));
   }
 
   static deleteMovie(id) {
     return this.findByIdAndDelete(id)
-      .orFail(/* error */)
+      .orFail()
       .then((movie) => movie)
-      .catch((err) => err);
+      .catch((err) => Promise.reject(err));
   }
 }

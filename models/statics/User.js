@@ -1,22 +1,22 @@
 export default class User {
-  static createUser({ email, name }) {
-    return this.create({ email, name })
+  static createUser({ email, name, password }) {
+    return this.create({ email, name, password })
       .then((user) => user)
-      .catch((err) => err);
+      .catch((err) => Promise.reject(err));
   }
 
   static getUserByEmail({ email }) {
     return this.findOne({ email }).select('+password')
       .orFail()
       .then((user) => user)
-      .catch((err) => err);
+      .catch((err) => Promise.reject(err));
   }
 
   static getUserById(userId) {
     return this.findById(userId).select('email name')
       .orFail()
       .then((user) => user)
-      .catch((err) => err);
+      .catch((err) => Promise.reject(err));
   }
 
   static updateUser(userId, { email, name }) {
@@ -31,6 +31,6 @@ export default class User {
     )
       .orFail()
       .then((user) => user)
-      .catch((err) => err);
+      .catch((err) => Promise.reject(err));
   }
 }
