@@ -27,7 +27,7 @@ class Movies {
       .then((movies) => {
         res.send(this.answer.moviesAnswer(movies));
       })
-      .catch((err) => {
+      .catch(() => {
         next(this.error.getCustomError(400, 'У пользователя отсутствуют фильмы'));
       });
   }
@@ -47,7 +47,7 @@ class Movies {
           next(this.error.getCustomError(405, 'Нельзя удалять чужие фильмы'));
         }
       })
-      .catch((err) => {
+      .catch(() => {
         next(this.error.getCustomError(400, `В базе нет фильма с id: ${movieId}`));
       });
   }

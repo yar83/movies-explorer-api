@@ -58,10 +58,10 @@ class Users {
               );
               res.end();
             }
-          })
+          });
       })
       .catch((err) => {
-        next(this.error.getCustomError(400, this.error.getFullErrMsg(err)));
+        next(this.error.getCustomError(400, `Пользователь ${req.body.email} не существует`));
       });
   }
 
@@ -94,7 +94,7 @@ class Users {
     const { _id } = req.user;
     this.model.getUserById(_id)
       .then((user) => res.send(this.answer.userAnswer(user)))
-      .catch((err) => {
+      .catch(() => {
         next(this.error.errorHandler(505, 'getUser error'));
       });
   }
@@ -103,7 +103,7 @@ class Users {
     const { _id } = req.user;
     this.model.updateUser(_id, req.body)
       .then((user) => res.send(this.answer.userAnswer(user)))
-      .catch((err) => {
+      .catch(() => {
         next(this.error.errorHandler(505, 'updateUser error'));
       });
   }

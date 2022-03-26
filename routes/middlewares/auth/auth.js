@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import CustomError from '../utils/errors/CustomError.js';
+import CustomError from '../../../utils/errors/CustomError.js';
 
 const error = new CustomError();
 

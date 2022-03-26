@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import indexRouter from './routes/index.js';
 import errorHandler from './middlewares/errors.js';
-import auth from './middlewares/auth.js';
+import reqValidationErrors from './middlewares/reqValidationErrors.js';
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -14,17 +14,17 @@ mongoose.connect(process.env.NODE_ENV === 'prod' ? 'mongodb://127.0.0.1:27017/mo
 
 app.use(cookieParser());
 
+app.use(express.json());
+
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Server will down now');
   }, 0);
 });
 
-app.use(express.json());
-
-app.use(auth);
 app.use(indexRouter);
 
+app.use(reqValidationErrors);
 app.use(errorHandler);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -5,9 +5,19 @@
     "class-methods-use-this": [
       "error",
       {
-        "exceptMethods": ["signout", "userAnswer", "movieAnswer", "errorHandler"]
+        "exceptMethods": [
+          "signout",
+          "userAnswer",
+          "movieAnswer",
+          "errorHandler",
+          "getCustomError",
+          "is11000error",
+          "getFullErrMsg"
+          ]
         }
     ],
-    "no-unused-vars": ["error", { "varsIgnorePattern": "next" }]
+    "no-unused-vars": ["error", { "varsIgnorePattern": "next" }],
+    "import/extensions": ["error", { "js": "ignorePackages" }],
+    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 8 }]
   }
 }
