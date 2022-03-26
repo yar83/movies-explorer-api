@@ -39,7 +39,7 @@ class Users {
             } else {
               const token = jwt.sign(
                 { _id: user._id },
-                process.env.IS_PROD === 'prod'
+                process.env.NODE_ENV === 'prod'
                   ? process.env.SECRET_KEY
                   : 'not-so-secret',
                 { expiresIn: '7d' },

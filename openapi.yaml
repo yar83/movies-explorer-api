@@ -110,7 +110,7 @@ paths:
         content:
           'application/json':
             schema:
-              $ref: '#/components/schemas/SignupRequest'
+              $ref: '#/components/schemas/GetUserRequest'
       responses:
         200:
           description: Successfull response
@@ -144,6 +144,30 @@ paths:
     get:
       summary: get all current user movies
       parameters:
+        - name: Cookie
+          in: header
+          description: token to be passed to header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfull response
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/CreateNewMovie'
+  /movies/{movieId}:
+    delete:
+      summary: Delete movie by its Id
+      parameters:
+        - name: movieId
+          in: path
+          description: movie Id as mongodb objectID
+          required: true
+          schema:
+            type: string
+            example: https://api.eternalmovies.nomoredomains.work/movies/623cc0eda253bb4364c358a3
         - name: Cookie
           in: header
           description: token to be passed to header

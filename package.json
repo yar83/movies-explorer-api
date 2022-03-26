@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "deploy": "find . -type d -name node_modules -prune -o -name '*' -print | xargs tar --exclude='./node_modules' --exclude='logs' --exclude='*.log' --exclude='openapi.yaml' --exclude='.env' -cf - | ssh bfzu@eternalmovies.nomoredomains.work tar -xf - -C /home/bfzu/movies-backend && echo 'Deployment successfully completed'"
   },
   "type": "module",
   "repository": {
@@ -29,7 +30,9 @@
     "eslint": "^7.32.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.7"
+    "mongoose": "^6.2.7",
+    "morgan": "^1.10.0",
+    "morgan-json": "^1.1.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
