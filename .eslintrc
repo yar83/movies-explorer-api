@@ -1,4 +1,11 @@
 {
+  "env": {
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2019,
+    "sourceType": "module"
+  },
   "extends": "airbnb-base",
   "rules": {
     "no-underscore-dangle": ["error", { "allow": ["_id"] }],
@@ -16,7 +23,7 @@
           ]
         }
     ],
-    "no-unused-vars": ["error", { "varsIgnorePattern": "next" }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "ext" }],
     "import/extensions": ["error", { "js": "ignorePackages" }],
     "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 8 }]
   }

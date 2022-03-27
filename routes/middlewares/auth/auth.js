@@ -12,7 +12,7 @@ export default (req, res, next) => {
   try {
     payload = jwt.verify(
       token,
-      process.env.PROD
+      process.env.NODE_ENV === 'prod'
         ? process.env.SECRET_KEY
         : 'not-so-secret',
     );

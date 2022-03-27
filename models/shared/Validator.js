@@ -7,8 +7,7 @@ class Validator {
 
   static validateEmail(email) {
     if (!email) return false;
-    // eslint-disable-next-line
-    const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\])|(([\w\-]+\.)+[a-zA-Z]{2,}))$/i;
+    const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\])|(([\w-]+\.)+[a-zA-Z]{2,}))$/i;
     return regex.test(email);
   }
 }

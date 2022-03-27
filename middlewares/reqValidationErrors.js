@@ -1,6 +1,5 @@
 import { isCelebrateError } from 'celebrate';
 
-// eslint-disable-next-line no-unused-vars
 export default (err, req, res, next) => {
   if (!isCelebrateError(err)) return next(err);
   let message = '';

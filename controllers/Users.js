@@ -60,7 +60,7 @@ class Users {
             }
           });
       })
-      .catch((err) => {
+      .catch(() => {
         next(this.error.getCustomError(400, `Пользователь ${req.body.email} не существует`));
       });
   }
@@ -70,7 +70,7 @@ class Users {
     const { _id } = req.user;
     const token = jwt.sign(
       { _id },
-      process.env.IS_PROD === 'prod'
+      process.env.NODE_ENV === 'prod'
         ? process.env.SECRET_KEY
         : 'not-so-secret',
       { expiresIn: '-1d' },
@@ -95,7 +95,7 @@ class Users {
     this.model.getUserById(_id)
       .then((user) => res.send(this.answer.userAnswer(user)))
       .catch(() => {
-        next(this.error.errorHandler(505, 'getUser error'));
+        next(this.error.errorHandler(400, 'Пользователь не найден'));
       });
   }
 
@@ -104,7 +104,7 @@ class Users {
     this.model.updateUser(_id, req.body)
       .then((user) => res.send(this.answer.userAnswer(user)))
       .catch(() => {
-        next(this.error.errorHandler(505, 'updateUser error'));
+        next(this.error.errorHandler(400, 'Пользователь не найден'));
       });
   }
 }

@@ -3,6 +3,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
+import helmet from 'helmet';
+import rateLimit from './utils/ratelimiter/ratelimSettings.js';
 import indexRouter from './routes/index.js';
 import errorHandler from './middlewares/errors.js';
 import reqValidationErrors from './middlewares/reqValidationErrors.js';
@@ -19,9 +21,9 @@ app.use(morgan(logger.logFormat, {
   stream: logger.errStream,
   skip: (req, res) => res.statusCode < 400,
 }));
-
+app.use(rateLimit);
+app.use(helmet());
 app.use(cookieParser());
-
 app.use(express.json());
 
 app.get('/crash-test', () => {

@@ -1,2 +1,2 @@
 # movies-explorer-api
-Yandex Praktikum thesis API part
+## Бэкенд дипломной работы Яндекс Практикума

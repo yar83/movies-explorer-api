@@ -9,8 +9,6 @@ class Movies {
     this.error = error;
   }
 
-  // movie data will send from front without owner
-  // ower _id will get from req.user
   createMovie(req, res, next) {
     const owner = req.user._id;
     const movieData = { ...req.body, owner };
@@ -41,10 +39,10 @@ class Movies {
           this.model.deleteMovie(movieId)
             .then((deletedMovie) => res.send(this.answer.movieAnswer(deletedMovie)))
             .catch((err) => {
-              next(this.error.getCustomError(405, this.error.getFullErrMsg(err)));
+              next(this.error.getCustomError(409, this.error.getFullErrMsg(err)));
             });
         } else {
-          next(this.error.getCustomError(405, 'Нельзя удалять чужие фильмы'));
+          next(this.error.getCustomError(403, 'Нельзя удалять чужие фильмы'));
         }
       })
       .catch(() => {
