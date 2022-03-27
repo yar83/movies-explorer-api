@@ -25,16 +25,8 @@ app.use(rateLimit);
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
-
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Server will down now');
-  }, 0);
-});
-
 app.use(indexRouter);
-
 app.use(reqValidationErrors);
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(port);
