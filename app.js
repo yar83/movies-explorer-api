@@ -8,7 +8,7 @@ import rateLimit from './utils/ratelimiter/ratelimSettings.js';
 import indexRouter from './routes/index.js';
 import errorHandler from './middlewares/errors.js';
 import reqValidationErrors from './middlewares/reqValidationErrors.js';
-import logger from './utils/logs/loggerSettings.js';
+import logger from './utils/logger/loggerSettings.js';
 
 dotenv.config();
 const port = process.env.PORT || 3000;
