@@ -65,7 +65,6 @@ class Users {
       });
   }
 
-  // eslint-disable-next-line
   signout(req, res, next) {
     const { _id } = req.user;
     const token = jwt.sign(
