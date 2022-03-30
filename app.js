@@ -14,7 +14,8 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
 
-mongoose.connect(process.env.NODE_ENV === 'prod' ? process.env.PROD_DB_URI : 'mongodb://127.0.0.1:27017/moviesdb');
+// mongoose.connect(process.env.NODE_ENV === 'prod' ? process.env.PROD_DB_URI : 'mongodb://127.0.0.1:27017/moviesdb');
+mongoose.connect(process.env.NODE_ENV === 'prod' ? process.env.PROD_DB_URI : 'mongodb://moviesApp:qZVk3Kpvow323s@eternalmovies.nomoredomains.work:27017/moviesdb');
 
 app.use(morgan(logger.logFormat, { stream: logger.logStream }));
 app.use(morgan(logger.logFormat, {

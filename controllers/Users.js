@@ -21,7 +21,7 @@ class Users {
           })
           .catch((err) => {
             if (this.error.is11000error(err)) {
-              next(this.error.getCustomError(400, `Электронная почта ${req.body.email} уже занята. Используйте другую.`));
+              next(this.error.getCustomError(409, `Электронная почта ${req.body.email} уже занята. Используйте другую.`));
             } else {
               next(this.error.getCustomError(400, this.error.getFullErrMsg(err)));
             }
@@ -35,7 +35,7 @@ class Users {
         bcrypt.compare(req.body.password, user.password)
           .then((bCryptRes) => {
             if (!bCryptRes) {
-              next(this.error.getCustomError(401, 'Неправильные почта или пароль'));
+              next(this.error.getCustomError(401, 'Неправильнае почта или пароль'));
             } else {
               const token = jwt.sign(
                 { _id: user._id },
@@ -50,7 +50,8 @@ class Users {
                 {
                   path: '/',
                   maxAge: 1000 * 3600 * 24 * 7,
-                  domain: '.eternalmovies.nomoredomains.word',
+                  // domain: '.eternalmovies.nomoredomains.work',
+                  ...(process.env.NODE_ENV === 'prod' && {domain: '.eternalmovies.nomoredomains.work'}),
                   httpOnly: true,
                   secure: true,
                   sameSite: 'none',
@@ -61,11 +62,11 @@ class Users {
           });
       })
       .catch(() => {
-        next(this.error.getCustomError(400, `Пользователь ${req.body.email} не существует`));
+        next(this.error.getCustomError(401, 'Неправильная почта или пароль'));
       });
   }
 
-  signout(req, res, next) {
+  signout(req, res) {
     const { _id } = req.user;
     const token = jwt.sign(
       { _id },
@@ -80,7 +81,8 @@ class Users {
       {
         path: '/',
         maxAge: 1000 * 3600 * 24 * (-1),
-        domain: '.eternalmovies.nomoredomains.word',
+        // domain: '.eternalmovies.nomoredomains.work',
+        ...(process.env.NODE_ENV === 'prod' && {domain: '.eternalmovies.nomoredomains.work'}),
         httpOnly: true,
         secure: true,
         sameSite: 'none',
@@ -94,16 +96,21 @@ class Users {
     this.model.getUserById(_id)
       .then((user) => res.send(this.answer.userAnswer(user)))
       .catch(() => {
-        next(this.error.errorHandler(400, 'Пользователь не найден'));
+        next(this.error.getCustomError(400, 'Пользователь не найден'));
       });
   }
 
   updateUser(req, res, next) {
     const { _id } = req.user;
+    console.log(_id);
     this.model.updateUser(_id, req.body)
       .then((user) => res.send(this.answer.userAnswer(user)))
-      .catch(() => {
-        next(this.error.errorHandler(400, 'Пользователь не найден'));
+      .catch((err) => {
+        console.log(err);
+        next(err.code === 11000
+          ? this.error.getCustomError(400, `Электронная почта ${req.body.email} уже занята. Используйте другую.`)
+          : this.error.getCustomError(400, 'Пользователь не найден')
+        );
       });
   }
 }

@@ -16,7 +16,7 @@ export default class Answer {
       year: movie.year,
       description: movie.description,
       image: movie.image,
-      trailerLInk: movie.trailerLInk,
+      trailerLInk: movie.trailerLink,
       thumbnail: movie.thumbnail,
       owner: movie.owner,
       movieId: movie.movieId,

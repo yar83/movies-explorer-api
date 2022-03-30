@@ -39,9 +39,9 @@ const movieSchema = new Schema({
     },
   },
 
-  trailerLInk: {
+  trailerLink: {
     type: String,
-    requiredPaths: [true, 'Ссылка на трейлер не указана'],
+    required: [true, 'Ссылка на трейлер не указана'],
     validate: {
       validator: Validator.validateURL,
       message: (props) => `${props.value} не является допустимой ссылкой`,
@@ -64,7 +64,7 @@ const movieSchema = new Schema({
   },
 
   movieId: {
-    type: mongoose.ObjectId,
+    type: Number,
     ref: 'MoviesExplorer',
     required: [true, 'Id фильма из БД MoviesExplorer не указано'],
   },

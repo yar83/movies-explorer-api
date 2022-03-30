@@ -8,6 +8,7 @@ const format = mjson({
   date: ':date[clf]',
   http_version: ':http-version',
   method: ':method',
+  url: ':url',
   referrer: ':referrer',
   'remote address': ':remote-addr',
   'req[header]': ':req[content-type]',
@@ -15,14 +16,13 @@ const format = mjson({
   'response time': ':response-time[3]',
   status: ':status',
   'total time': 'total-time[3]',
-  url: ':url',
   'user agent': ':user-agent',
 });
 
 const logger = {
   logFormat: format,
-  logStream: () => fs.createWriteStream(path.join(dirname, 'logs/request.log'), { flags: 'a' }),
-  errStream: () => fs.createWriteStream(path.join(dirname, 'logs/error.log'), { flags: 'a' }),
+  logStream: fs.createWriteStream(path.join(dirname, 'logs/request.log'), { flags: 'a' }),
+  errStream: fs.createWriteStream(path.join(dirname, 'logs/error.log'), { flags: 'a' }),
 };
 
 ['request.log', 'error.log'].forEach((file) => {

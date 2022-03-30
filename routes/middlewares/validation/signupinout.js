@@ -1,5 +1,4 @@
 import { celebrate, Joi } from 'celebrate';
-import cookieObj from './shares/cookieObj.js';
 
 export default {
   validateSignup: () => celebrate(
@@ -41,16 +40,6 @@ export default {
         'string.min': '{#key} не может быть короче {#limit} символов',
         'string.max': '{#key} не может быть длиннее {#limit} символов',
         'object.unknown': 'Недопустимое поле {#label}',
-      },
-    },
-  ),
-
-  validateSignout: () => celebrate(
-    cookieObj,
-    {
-      abortEarly: true,
-      messages: {
-        'any.required': 'Куки токен не предоставлен',
       },
     },
   ),

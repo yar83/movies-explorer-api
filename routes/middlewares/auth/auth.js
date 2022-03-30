@@ -6,7 +6,7 @@ const error = new CustomError();
 export default (req, res, next) => {
   const { token } = req.cookies;
 
-  if (!token) next(error.getCustomError(401, 'Токен не предоставлен'));
+  if (!token) next(error.getCustomError(401, 'Токен не предоставлен. Необходимо авторизоваться'));
 
   let payload;
   try {
@@ -17,7 +17,7 @@ export default (req, res, next) => {
         : 'not-so-secret',
     );
   } catch (err) {
-    next(error.getCustomError(401, 'Необходимо авторизироваться'));
+    next(error.getCustomError(401, 'Необходимо авторизоваться'));
   }
   req.user = payload;
   next();
