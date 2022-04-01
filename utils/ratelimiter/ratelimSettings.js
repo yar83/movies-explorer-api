@@ -1,6 +1,6 @@
-import rateLimit from 'express-rate-limit';
+const rateLimit = require('express-rate-limit');
 
-export default rateLimit({
+module.exports = rateLimit({
   windowMs: 1000 * 60 * 10,
   max: 50,
   standardHeaders: true,

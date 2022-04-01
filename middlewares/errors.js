@@ -1,9 +1,10 @@
-// 'next' is mandotory in Express error middlewares
-// eslint-disable-next-line no-unused-vars
-export default (err, req, res, next) => {
+const errMsg = require('../utils/constants/errors');
+
+module.exports = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = statusCode === 500
-    ? 'Внутренняя ошибка сервера'
+    ? errMsg.internalServerError
     : err.message;
+  next();
   return res.status(statusCode).send({ message });
 };

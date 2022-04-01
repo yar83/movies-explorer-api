@@ -1,12 +1,11 @@
-import jwt from 'jsonwebtoken';
-import CustomError from '../../../utils/errors/CustomError.js';
+const jwt = require('jsonwebtoken');
+const CustomError = require('../../../utils/errors/CustomError');
+const errMsg = require('../../../utils/constants/errors');
 
-const error = new CustomError();
-
-export default (req, res, next) => {
+const auth = (req, res, next) => {
   const { token } = req.cookies;
 
-  if (!token) next(error.getCustomError(401, 'Токен не предоставлен. Необходимо авторизоваться'));
+  if (!token) next(CustomError.getCustomError(401, errMsg.authRequired));
 
   let payload;
   try {
@@ -17,9 +16,11 @@ export default (req, res, next) => {
         : 'not-so-secret',
     );
   } catch (err) {
-    next(error.getCustomError(401, 'Необходимо авторизоваться'));
+    next(CustomError.getCustomError(401, errMsg.authRequired));
   }
   req.user = payload;
   next();
   return null;
 };
+
+module.exports = auth;

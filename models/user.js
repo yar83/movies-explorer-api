@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import Validator from './shared/Validator.js';
-import User from './statics/User.js';
+const mongoose = require('mongoose');
+const Validator = require('./shared/Validator');
+const User = require('./statics/User');
 
 const { Schema } = mongoose;
 
@@ -25,11 +25,11 @@ const userSchema = new Schema({
   name: {
     type: String,
     required: [true, 'Имя не указано'],
-    minLength: [2, 'Имя не может быть короче двух символов'],
-    maxLength: [30, 'Имя не может быть длиннее двух символов'],
+    minLength: [1, 'Имя не может быть короче одного символа'],
+    maxLength: [30, 'Имя не может быть длиннее тридцати символов'],
   },
 });
 
 userSchema.loadClass(User);
 
-export default mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);

@@ -1,5 +1,5 @@
-export default class Answer {
-  userAnswer(user) {
+class Answer {
+  static userAnswer(user) {
     return ({
       _id: user._id,
       name: user.name,
@@ -7,7 +7,7 @@ export default class Answer {
     });
   }
 
-  movieAnswer(movie) {
+  static movieAnswer(movie) {
     return ({
       _id: movie._id,
       country: movie.country,
@@ -25,7 +25,9 @@ export default class Answer {
     });
   }
 
-  moviesAnswer(movies) {
+  static moviesAnswer(movies) {
     return movies.map((movie) => this.movieAnswer(movie));
   }
 }
+
+module.exports = Answer;

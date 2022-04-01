@@ -10,7 +10,6 @@
     "dev": "nodemon app.js",
     "deploy": "find . -type d -name node_modules -prune -o -name '*' -print | xargs tar --exclude='./node_modules' --exclude='logs' --exclude='*.log' --exclude='openapi.yaml' --exclude='.env' -cf - | ssh bfzu@eternalmovies.nomoredomains.work tar -xf - -C /home/bfzu/movies-backend && echo 'Deployment successfully completed'"
   },
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yar83/movies-explorer-api.git"

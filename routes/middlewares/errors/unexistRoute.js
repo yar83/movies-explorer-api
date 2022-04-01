@@ -1,5 +1,6 @@
-import CustomError from '../../../utils/errors/CustomError.js';
+const CustomError = require('../../../utils/errors/CustomError');
+const msgErr = require('../../../utils/constants/errors');
 
-export default (req, res, next) => {
-  next(new CustomError(404, 'Запрос на несуществующий адрес'));
+module.exports = (req, res, next) => {
+  next(CustomError.getCustomError(404, msgErr.unExistRoute));
 };

@@ -1,15 +1,15 @@
-import express from 'express';
-import signinupout from './signinupout.js';
-import users from './users.js';
-import movies from './movies.js';
-import auth from './middlewares/auth/auth.js';
-import routeErrorHandler from './middlewares/errors/unexistRoute.js';
+const express = require('express');
+const defaultRoute = require('./default');
+const auth = require('./middlewares/auth/auth');
+const { usersInst } = require('../controllers/Users');
+const signupinValidator = require('./middlewares/validation/signupin');
+const routeErrorHandler = require('./middlewares/errors/unexistRoute');
 
 const router = express.Router();
 
-router.use('/', signinupout);
-router.use('/users', auth, users);
-router.use('/movies', auth, movies);
+router.post('/signup', signupinValidator.validateSignup(), usersInst.signup.bind(usersInst));
+router.post('/signin', signupinValidator.validateSignin(), usersInst.signin.bind(usersInst));
+router.use('/', auth, defaultRoute);
 router.use(routeErrorHandler);
 
-export default router;
+module.exports = router;

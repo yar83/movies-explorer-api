@@ -1,6 +1,7 @@
-import movieModel from '../models/movie.js';
-import Answer from '../utils/answers/Answer.js';
-import CustomError from '../utils/errors/CustomError.js';
+const movieModel = require('../models/movie');
+const Answer = require('../utils/answers/Answer');
+const CustomError = require('../utils/errors/CustomError');
+const errMsg = require('../utils/constants/errors');
 
 class Movies {
   constructor(model, answer, error) {
@@ -13,21 +14,18 @@ class Movies {
     const owner = req.user._id;
     const movieData = { ...req.body, owner };
     this.model.createMovie(movieData)
-      .then((movie) => res.send(this.answer.movieAnswer(movie)))
-      .catch((err) => {
-        next(this.error.getCustomError(400, this.error.getFullErrMsg(err)));
-      });
+      .then((movie) => {
+        if (movie.length) res.send(this.answer.movieAnswer(movie));
+        res.send(movie);
+      })
+      .catch((err) => next(err));
   }
 
   getMovies(req, res, next) {
     const owner = req.user._id;
     this.model.getAllUserMovies(owner)
-      .then((movies) => {
-        res.send(this.answer.moviesAnswer(movies));
-      })
-      .catch(() => {
-        next(this.error.getCustomError(400, 'У пользователя отсутствуют фильмы'));
-      });
+      .then((movies) => res.send(this.answer.moviesAnswer(movies)))
+      .catch((err) => next(err));
   }
 
   deleteMovie(req, res, next) {
@@ -38,17 +36,13 @@ class Movies {
         if (movie.owner.toString() === ownerId) {
           this.model.deleteMovie(movieId)
             .then((deletedMovie) => res.send(this.answer.movieAnswer(deletedMovie)))
-            .catch((err) => {
-              next(this.error.getCustomError(400, this.error.getFullErrMsg(err)));
-            });
+            .catch((err) => next(err));
         } else {
-          next(this.error.getCustomError(403, 'Нельзя удалять чужие фильмы'));
+          next(this.error.getCustomError(403, errMsg.noDelOtherPerMovie));
         }
       })
-      .catch(() => {
-        next(this.error.getCustomError(400, `В базе нет фильма с id: ${movieId}`));
-      });
+      .catch((err) => next(err));
   }
 }
 
-export default new Movies(movieModel, new Answer(), new CustomError());
+module.exports = new Movies(movieModel, Answer, CustomError);

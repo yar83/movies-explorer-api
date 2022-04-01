@@ -1,20 +1,21 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import mongoose from 'mongoose';
-import cookieParser from 'cookie-parser';
-import morgan from 'morgan';
-import helmet from 'helmet';
-import rateLimit from './utils/ratelimiter/ratelimSettings.js';
-import indexRouter from './routes/index.js';
-import errorHandler from './middlewares/errors.js';
-import reqValidationErrors from './middlewares/reqValidationErrors.js';
-import logger from './utils/logger/loggerSettings.js';
+const dotenv = require('dotenv');
+const express = require('express');
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const indexRouter = require('./routes/index');
+const errorHandler = require('./middlewares/errors');
+const reqValidationErrors = require('./middlewares/reqValidationErrors');
+const logger = require('./utils/logger/loggerSettings');
+const rateLimit = require('./utils/ratelimiter/ratelimSettings');
+const { devMode } = require('./utils/constants/env');
 
 dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
 
-mongoose.connect(process.env.NODE_ENV === 'prod' ? process.env.PROD_DB_URI : 'mongodb://127.0.0.1:27017/moviesdb');
+mongoose.connect(process.env.NODE_ENV === 'prod' ? process.env.PROD_DB_URI : devMode.DBURI);
 
 app.use(morgan(logger.logFormat, { stream: logger.logStream }));
 app.use(morgan(logger.logFormat, {

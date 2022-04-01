@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import Validator from './shared/Validator.js';
-import Movie from './statics/Movie.js';
+const mongoose = require('mongoose');
+const Validator = require('./shared/Validator');
+const Movie = require('./statics/Movie');
 
 const { Schema } = mongoose;
 
@@ -82,4 +82,4 @@ const movieSchema = new Schema({
 
 movieSchema.loadClass(Movie);
 
-export default mongoose.model('Movie', movieSchema);
+module.exports = mongoose.model('Movie', movieSchema);

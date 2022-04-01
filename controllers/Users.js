@@ -1,8 +1,10 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import userModel from '../models/user.js';
-import Answer from '../utils/answers/Answer.js';
-import CustomError from '../utils/errors/CustomError.js';
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const userModel = require('../models/user');
+const Answer = require('../utils/answers/Answer');
+const CustomError = require('../utils/errors/CustomError');
+const { devMode } = require('../utils/constants/env');
+const errMsg = require('../utils/constants/errors');
 
 class Users {
   constructor(model, answer, error) {
@@ -16,16 +18,8 @@ class Users {
       .then((password) => {
         req.body.password = password;
         this.model.createUser(req.body)
-          .then((user) => {
-            res.send(this.answer.userAnswer(user));
-          })
-          .catch((err) => {
-            if (this.error.is11000error(err)) {
-              next(this.error.getCustomError(409, `Электронная почта ${req.body.email} уже занята. Используйте другую.`));
-            } else {
-              next(this.error.getCustomError(400, this.error.getFullErrMsg(err)));
-            }
-          });
+          .then((user) => res.send(this.answer.userAnswer(user)))
+          .catch((err) => next(err));
       });
   }
 
@@ -35,13 +29,13 @@ class Users {
         bcrypt.compare(req.body.password, user.password)
           .then((bCryptRes) => {
             if (!bCryptRes) {
-              next(this.error.getCustomError(401, 'Неправильнае почта или пароль'));
+              next(this.error.getCustomError(401, errMsg.wrongEmailPass));
             } else {
               const token = jwt.sign(
                 { _id: user._id },
                 process.env.NODE_ENV === 'prod'
                   ? process.env.SECRET_KEY
-                  : 'not-so-secret',
+                  : devMode.secKey,
                 { expiresIn: '7d' },
               );
               res.cookie(
@@ -50,8 +44,7 @@ class Users {
                 {
                   path: '/',
                   maxAge: 1000 * 3600 * 24 * 7,
-                  // domain: '.eternalmovies.nomoredomains.work',
-                  ...(process.env.NODE_ENV === 'prod' && {domain: '.eternalmovies.nomoredomains.work'}),
+                  ...(process.env.NODE_ENV === 'prod' && { domain: '.eternalmovies.nomoredomains.work' }),
                   httpOnly: true,
                   secure: true,
                   sameSite: 'none',
@@ -61,18 +54,16 @@ class Users {
             }
           });
       })
-      .catch(() => {
-        next(this.error.getCustomError(401, 'Неправильная почта или пароль'));
-      });
+      .catch((err) => next(err));
   }
 
-  signout(req, res) {
+  static signout(req, res) {
     const { _id } = req.user;
     const token = jwt.sign(
       { _id },
       process.env.NODE_ENV === 'prod'
         ? process.env.SECRET_KEY
-        : 'not-so-secret',
+        : devMode.secKey,
       { expiresIn: '-1d' },
     );
     res.cookie(
@@ -81,8 +72,7 @@ class Users {
       {
         path: '/',
         maxAge: 1000 * 3600 * 24 * (-1),
-        // domain: '.eternalmovies.nomoredomains.work',
-        ...(process.env.NODE_ENV === 'prod' && {domain: '.eternalmovies.nomoredomains.work'}),
+        ...(process.env.NODE_ENV === 'prod' && { domain: '.eternalmovies.nomoredomains.work' }),
         httpOnly: true,
         secure: true,
         sameSite: 'none',
@@ -95,23 +85,17 @@ class Users {
     const { _id } = req.user;
     this.model.getUserById(_id)
       .then((user) => res.send(this.answer.userAnswer(user)))
-      .catch(() => {
-        next(this.error.getCustomError(400, 'Пользователь не найден'));
-      });
+      .catch((err) => next(err));
   }
 
   updateUser(req, res, next) {
     const { _id } = req.user;
-    console.log(_id);
     this.model.updateUser(_id, req.body)
       .then((user) => res.send(this.answer.userAnswer(user)))
-      .catch((err) => {
-        console.log(err);
-        next(err.code === 11000
-          ? this.error.getCustomError(400, `Электронная почта ${req.body.email} уже занята. Используйте другую.`)
-          : this.error.getCustomError(400, 'Пользователь не найден')
-        );
-      });
+      .catch((err) => next(err));
   }
 }
-export default new Users(userModel, new Answer(), new CustomError());
+
+const users = new Users(userModel, Answer, CustomError);
+exports.UsersClass = Users;
+exports.usersInst = users;

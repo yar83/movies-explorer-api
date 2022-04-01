@@ -1,6 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import mjson from 'morgan-json';
+const fs = require('fs');
+const path = require('path');
+const mjson = require('morgan-json');
 
 const dirname = process.cwd();
 
@@ -34,4 +34,4 @@ const logger = {
   }
 });
 
-export default logger;
+module.exports = logger;

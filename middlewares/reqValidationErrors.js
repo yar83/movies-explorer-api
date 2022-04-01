@@ -1,6 +1,6 @@
-import { isCelebrateError } from 'celebrate';
+const { isCelebrateError } = require('celebrate');
 
-export default (err, req, res, next) => {
+module.exports = (err, req, res, next) => {
   if (!isCelebrateError(err)) return next(err);
   let message = '';
   const errors = [];

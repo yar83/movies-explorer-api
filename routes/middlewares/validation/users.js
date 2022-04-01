@@ -1,13 +1,11 @@
-import { celebrate, Joi } from 'celebrate';
+const { celebrate, Joi } = require('celebrate');
+const userSchema = require('./shared/schemas');
 
-export default {
+module.exports = {
   validateUpdateUser: () => celebrate(
     {
       body: Joi.object().keys({
-        name: Joi.string().min(1).max(20).required(),
-        email: Joi.string().required().email({
-          minDomainSegments: 2,
-        }),
+        ...userSchema,
       }),
     },
     {
@@ -15,6 +13,7 @@ export default {
       messages: {
         'any.required': 'Отсутствует необходимое поле: {#label}',
         'string.email': '{#value} не является допустимым адресом электронной почты',
+        'string.empty': '{#label} не может быть пустой строкой',
         'string.min': '{#key} не может быть короче {#limit} символов',
         'string.max': '{#key} не может быть длиннее {#limit} символов',
         'object.unknown': 'Недопустимое поле {#label}',
