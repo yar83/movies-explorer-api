@@ -1,0 +1,264 @@
+openapi: '3.0.2'
+info:
+  title: Movies Explorer Api
+  description: A collection of favorite movies that eternally stay in our souls.
+  version: '0.1'
+  contact:
+    name: 'Eternal movies'
+    url: 'https://eternalmovies.nomoredomains.work'
+servers:
+  - url: 'https://api.eternalmovies.nomoredomains.work'
+    description: Production server
+paths:
+  /signup:
+    post:
+      summary: 'user to add to the users DB'
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        200:
+          description: Successfull response
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/SignupRequest'
+        400:
+          description: Bad request
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /signin:
+    post:
+      summary: 'user presents its credential to get valid token'
+      requestBody:
+        required: true
+        description: A JSON object containing the email and password
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/SigninRequest'
+      responses:
+        '200':
+          description: >
+            Successfully authenticated.
+            The token is returned in a cookie named `token`. You need to include this cookie in subsequent requests.
+          headers:
+            Set-Cookie:
+              description: valid token
+              schema:
+                type: string
+        '401':
+          description: >
+            Email or password is wrong.
+            User presented wrong credentials
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /signout:
+    post:
+      summary: user sends cookie in request header
+      parameters:
+        - name: token
+          in: header
+          description: token to be passed to header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >
+            The token is returned in a cookie named `token` with data expired yesterday.
+          headers:
+            Set-Cookie:
+              description: yesterday expired token
+              schema:
+                type: string
+  /users/me:
+    get:
+      summary: get current user data
+      parameters:
+        - name: token
+          in: header
+          description: token to be passed to header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfull response
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/GetUserRequest'
+    patch:
+      summary: patch current user data
+      parameters:
+        - name: token
+          in: header
+          description: token to be passed to header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/GetUserRequest'
+      responses:
+        200:
+          description: Successfull response
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/GetUserRequest'
+  /movies:
+    post:
+      summary: add new movie
+      parameters:
+        - name: Cookie
+          in: header
+          description: token to be passed to header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CreateNewMovie'
+      responses:
+        200:
+          description: Successfull response
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/CreateNewMovie'
+    get:
+      summary: get all current user movies
+      parameters:
+        - name: Cookie
+          in: header
+          description: token to be passed to header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfull response
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/CreateNewMovie'
+  /movies/{movieId}:
+    delete:
+      summary: Delete movie by its Id
+      parameters:
+        - name: movieId
+          in: path
+          description: movie Id as mongodb objectID
+          required: true
+          schema:
+            type: string
+            example: https://api.eternalmovies.nomoredomains.work/movies/623cc0eda253bb4364c358a3
+        - name: Cookie
+          in: header
+          description: token to be passed to header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfull response
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/CreateNewMovie'
+      
+components:
+  schemas:
+    SignupRequest:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+        email:
+            type: string
+        password:
+            type: string
+    SigninRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    GetUserRequest:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    CreateNewMovie:
+      type: object
+      required:
+        - country
+        - director
+        - duration
+        - year
+        - description
+        - image
+        - thumbnail
+        - owner
+        - movieId
+        - nameRU
+        - nameEN
+      properties:
+        country:
+          type: string
+        director:
+          type: string
+        duration:
+          type: integer
+        year:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        thumbnail:
+          type: string
+        owner:
+          type: string
+        movieId:
+          type: string
+        nameRU:
+          type: string
+        nameEN:
+          type: string
+        

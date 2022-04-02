@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "deploy": "find . -type d -name node_modules -prune -o -name '*' -print | xargs tar --exclude='./node_modules' --exclude='logs' --exclude='*.log' --exclude='openapi.yaml' --exclude='.env' -cf - | ssh bfzu@eternalmovies.nomoredomains.work tar -xf - -C /home/bfzu/movies-backend && echo 'Deployment successfully completed'"
   },
   "repository": {
     "type": "git",
@@ -21,12 +22,23 @@
   },
   "homepage": "https://github.com/yar83/movies-explorer-api#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^15.0.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.0",
+    "eslint": "^7.32.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^6.3.0",
+    "helmet": "^5.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.7",
+    "morgan": "^1.10.0",
+    "morgan-json": "^1.1.0"
+  },
+  "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
-    "express": "^4.17.3"
-  },
-  "devDependencies": {
     "nodemon": "^2.0.15"
   },
   "nodemonConfig": {
