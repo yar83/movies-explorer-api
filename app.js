@@ -9,6 +9,7 @@ const errorHandler = require('./middlewares/errors');
 const reqValidationErrors = require('./middlewares/reqValidationErrors');
 const logger = require('./utils/logger/loggerSettings');
 const rateLimit = require('./utils/ratelimiter/ratelimSettings');
+const cors = require('./middlewares/cors');
 const { devMode } = require('./utils/constants/env');
 
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(rateLimit);
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
+app.use(cors);
 app.use(indexRouter);
 app.use(reqValidationErrors);
 app.use(errorHandler);
