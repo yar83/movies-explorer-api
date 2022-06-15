@@ -11,13 +11,13 @@ module.exports = {
         duration: Joi.number().integer().greater(0).less(10000)
           .required(),
         year: Joi.string().length(4).required(),
-        description: Joi.string().min(1).max(1000).required(),
+        description: Joi.string().min(1).max(10000).required(),
         image: Joi.string().pattern(validURL).required(),
         trailerLink: Joi.string().pattern(validURL).required(),
         thumbnail: Joi.string().pattern(validURL).required(),
         movieId: Joi.number().integer().positive().required(),
-        nameRU: Joi.string().min(1).max(100).required(),
-        nameEN: Joi.string().min(1).max(100).required(),
+        nameRU: Joi.string().min(1).max(200).required(),
+        nameEN: Joi.string().min(1).max(200).required(),
       }),
     },
     {
