@@ -6,8 +6,8 @@ module.exports = {
   validateCreateMovie: () => celebrate(
     {
       body: Joi.object().keys({
-        country: Joi.string().min(2).max(60).required(),
-        director: Joi.string().min(2).max(30).required(),
+        country: Joi.string().min(2).max(90).required(),
+        director: Joi.string().min(2).max(90).required(),
         duration: Joi.number().integer().greater(0).less(10000)
           .required(),
         year: Joi.string().length(4).required(),
