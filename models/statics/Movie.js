@@ -15,7 +15,8 @@ module.exports = class Movie {
   }
 
   static getMovieById(id) {
-    return this.findById(id)
+    const query = { movieId: id };
+    return this.find(query)
       .orFail(CustErr.getCustomError(404, errMsg.movieNotFound(id)))
       .then((movie) => movie)
       .catch((err) => {
