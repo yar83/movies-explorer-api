@@ -16,7 +16,7 @@ module.exports = class Movie {
 
   static getMovieById(id) {
     const query = { movieId: id };
-    return this.find(query)
+    return this.findOne(query)
       .orFail(CustErr.getCustomError(404, errMsg.movieNotFound(id)))
       .then((movie) => movie)
       .catch((err) => {
@@ -26,7 +26,8 @@ module.exports = class Movie {
   }
 
   static deleteMovie(id) {
-    return this.findByIdAndDelete(id)
+    const query = { movieId: id };
+    return this.deleteOne(query)
       .orFail(CustErr.getCustomError(404, errMsg.movieNotFound(id)))
       .then((movie) => movie)
       .catch((err) => {
