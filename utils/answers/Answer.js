@@ -16,7 +16,7 @@ class Answer {
       year: movie.year,
       description: movie.description,
       image: movie.image,
-      trailerLInk: movie.trailerLink,
+      trailerLink: movie.trailerLink,
       thumbnail: movie.thumbnail,
       owner: movie.owner,
       movieId: movie.movieId,
